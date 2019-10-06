@@ -1,2 +1,7 @@
 ---
-# tasks file for php
+- name: Installation PHP7.3
+  become: yes
+  with_items: "{{ packages }}"
+  apt:
+    pkg: "{{ item.name }}"
+    state: latest
