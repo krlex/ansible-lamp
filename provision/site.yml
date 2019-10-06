@@ -1,0 +1,11 @@
+---
+
+- name: LAMP provision
+  hosts: all
+  pre_tasks:
+    - include: /apache2/handlers/main.yml
+    - include: /php/handlers/main.yml
+  roles:
+    - apache2
+    - mysql
+    - php
