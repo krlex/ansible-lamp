@@ -1,0 +1,13 @@
+---
+- name: Installation Apache
+  become: yes
+  with_items: "{{ freebsd_packages }}"
+  package:
+    pkg: "{{ item.name }}"
+    state: latest
+
+- name: Start Apache
+  become: yes
+  service:
+    name: apache24
+    state: started

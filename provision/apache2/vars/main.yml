@@ -1,2 +1,16 @@
-packages:
+debian_packages:
   - name: apache2
+  - name: python-apt
+
+ubuntu_packages:
+  - name: apache2
+  - name: python-apt
+
+centos_packages:
+  - name: httpd
+
+fedora_packages:
+  - name: httpd
+
+freebsd_packages:
+  - name: apache24

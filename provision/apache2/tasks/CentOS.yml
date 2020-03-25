@@ -1,0 +1,13 @@
+---
+- name: Installation HTTPD
+  become: yes
+  with_items: "{{ centos_packages }}"
+  package:
+    pkg: "{{ item.name }}"
+    state: latest
+
+- name: Start HTTPD
+  become: yes
+  service:
+    name: httpd
+    state: started
