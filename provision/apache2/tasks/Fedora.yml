@@ -11,3 +11,23 @@
   service:
     name: httpd
     state: started
+
+- name: set http in firewall
+  become: yes
+  firewalld:
+    service: http
+    permanent: yes
+    zone: public
+    state: enabled
+
+- name: set http in firewall
+  become: yes
+  firewalld:
+    port: 443/tcp
+    permanent: yes
+    zone: public
+    state: enabled
+
+- name: Reload firewall
+  become: yes
+  command: firewall-cmd --reload
