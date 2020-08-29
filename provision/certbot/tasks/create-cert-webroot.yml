@@ -1,0 +1,63 @@
+---
+- name: Create temp webroot folder
+  file:
+    path: "{{ certbot_webroot_local_path }}"
+    state: directory
+  delegate_to: localhost
+
+- name: Check if certificate already exists.
+  stat:
+    path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+  register: letsencrypt_cert
+  delegate_to: localhost
+
+- name: Verify that an existing certificate was issued by the Let's Encrypt CA and is currently still valid
+  openssl_certificate:
+    path: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+    provider: assertonly
+    issuer:
+      O: Let's Encrypt
+    has_expired: False
+    valid_in: "{{ 3600 * 24 * 7 }}" #7 days
+  when: letsencrypt_cert.stat.exists
+  register: letsencrypt_cert_validity
+  delegate_to: localhost
+  ignore_errors: true
+
+- name: Set flag to renew certificate if needed
+  set_fact:
+    do_cert_renewal: true
+  when: (letsencrypt_cert.stat.exists == false) or
+        ((letsencrypt_cert_validity is defined) and
+        (letsencrypt_cert_validity.failed))
+  delegate_to: localhost
+
+- name: Debug 'do_cert_renewal'
+  debug:
+    msg: "{{ do_cert_renewal }}"
+
+- name: Mount remote {{ certbot_webroot_remote_path }} folder to local {{ certbot_webroot_local_path }}
+  command: sshfs root@{{ host_ip }}:{{ certbot_webroot_remote_path }} {{ certbot_webroot_local_path }}
+  when: do_cert_renewal == true
+  delegate_to: localhost
+
+- name: Generate new certificate if no certificate found in /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem or it is not valid
+  shell: "{{ certbot_create_cert_webroot_command }}"
+  when: do_cert_renewal == true
+  delegate_to: localhost
+  register: cert_generation_result
+  ignore_errors: true
+
+- name: Unmount remote {{ certbot_webroot_remote_path }} folder from local {{ certbot_webroot_local_path }}
+  command: fusermount -u {{ certbot_webroot_local_path }}
+  when: do_cert_renewal == true
+  delegate_to: localhost
+
+- name: Fail playbook if certificate generation failed
+  fail:
+    msg: "Certificate generation failed"
+  when:
+    - (do_cert_renewal is defined) and (do_cert_renewal)
+    - "'FAILED' in cert_generation_result.stderr"
+
+

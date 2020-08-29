@@ -1,0 +1,7 @@
+---
+galaxy_info:
+  author: infloop
+  description: Role with Cerbot installation and certificates obtaining
+  license: BSD
+  min_ansible_version: 2.7
+dependencies: []

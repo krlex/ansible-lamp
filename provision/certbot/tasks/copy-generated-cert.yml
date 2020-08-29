@@ -1,0 +1,29 @@
+- name: Copy generated cert.pem
+  copy:
+    dest: "{{ generated_certs_local_path }}"
+    src: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/cert.pem
+  delegate_to: localhost
+
+- name: Copy generated privkey.pem
+  copy:
+    dest: "{{ generated_certs_local_path }}"
+    src: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/privkey.pem
+  delegate_to: localhost
+
+- name: Copy generated fullchain.pem
+  copy:
+    dest: "{{ generated_certs_local_path }}"
+    src: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/fullchain.pem
+  delegate_to: localhost
+
+- name: Copy generated chain.pem
+  copy:
+    dest: "{{ generated_certs_local_path }}"
+    src: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/chain.pem
+  delegate_to: localhost
+
+- name: Copy generated README
+  copy:
+    dest: "{{ generated_certs_local_path }}"
+    src: /etc/letsencrypt/live/{{ cert_item.domains | first | replace('*.', '') }}/README
+  delegate_to: localhost

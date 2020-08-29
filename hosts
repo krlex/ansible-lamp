@@ -1,2 +1,5 @@
 [all]
 127.0.0.1 ansible_connection=local
+
+[letsencrypt]
+example.com ansible_user=root letsencrypt_email=me@example.com domain_name=example.com

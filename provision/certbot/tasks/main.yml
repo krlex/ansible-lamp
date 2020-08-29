@@ -1,0 +1,18 @@
+---
+- import_tasks: include-vars.yml
+  when: certbot_enable == true
+
+- import_tasks: install-with-package.yml
+  when: certbot_enable == true
+
+- include_tasks: create-cert-webroot.yml
+  with_items: "{{ certbot_certs }}"
+  loop_control:
+    loop_var: cert_item
+  when: certbot_enable == true
+
+- include_tasks: copy-generated-cert.yml
+  when: (generated_certs_copy_to_local != false) and (certbot_enable == true)
+  with_items: "{{ certbot_certs }}"
+  loop_control:
+    loop_var: cert_item
