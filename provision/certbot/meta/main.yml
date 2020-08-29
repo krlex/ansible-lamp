@@ -1,7 +1,7 @@
 ---
 galaxy_info:
-  author: infloop
+  author: krletron
   description: Role with Cerbot installation and certificates obtaining
   license: BSD
-  min_ansible_version: 2.7
+  min_ansible_version: 2.9
 dependencies: []

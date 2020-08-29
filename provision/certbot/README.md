@@ -1,5 +1,4 @@
-# ansible-certbot
-Ansible certbot role
+# Ansible-Certbot
 
 An Ansible role that generates new Let's Encrypt certificates
 
@@ -29,11 +28,11 @@ SSHFS installed locally.
 
     - hosts: servers
       vars:
-        certbot_admin_email: 'admin@test.com'
+        certbot_admin_email: 'admin@example.com'
         certbot_certs:
           - domains:
-            - www.test.com
-            - test.com
+            - www.example.com
+            - example.com
       roles:
          - { role: infloop.ansible-certbot }
 

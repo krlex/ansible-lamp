@@ -8,7 +8,7 @@ certbot_webroot_local_path: /tmp/letsencrypt-webroot-share/
 certbot_create_if_missing: false
 certbot_admin_email: email@example.com
 certbot_certs: []
-# - email: janedoe@example.com
+# - email: test@example.com
 #   domains:
 #     - example1.com
 #     - example2.com
