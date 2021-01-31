@@ -3,7 +3,7 @@ LAMP
 
 Linux + Apache2 + Mariadb + PHP
 
-#Installation
+# Installation
 
 ```
 vagrant up
